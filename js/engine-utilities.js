@@ -39,11 +39,38 @@ const nextEnemySpot = (enemies) => {
 // The function takes one parameter
 // The parameter represents the DOM node to which we will add the background
 const addBackground = (root) => {
-  // We create a new img DOM node.
-  const bg = document.createElement('img');
+  const bg = document.createElement("img");
+  const b = document.createElement("div");
+  b.style.position = "absolute";
+  b.style.height = "50px";
+  b.style.width = "200px";
+  b.style.color = "white";
+  b.style.fontSize = "40px";
+  b.innerText = `Points: `;
+  b.id = "points-board";
+  root.append(b);
 
+  const levelText = document.createElement("div");
+  levelText.id = "level";
+  levelText.style.position = "absolute";
+  levelText.style.color = "#44587B";
+  levelText.style.fontSize = "55px";
+
+  levelText.style.width = "100%";
+  levelText.style.textAlign = "center";
+  root.append(levelText);
+  const textTitle = document.createElement("h1");
+  textTitle.style.position = "absolute";
+  textTitle.innerText = "Don't get hit by the coconuts";
+  textTitle.style.color = "#44587B";
+  textTitle.style.opacity = "0.5";
+  textTitle.style.width = "100%";
+  textTitle.style.marginTop = "150px";
+  textTitle.style.textAlign = "center";
+  textTitle.style.fontSize = "60px";
+  root.append(textTitle);
   // We set its src attribute and the height and width CSS attributes
-  bg.src = 'images/stars.png';
+  bg.src = "images/beach.jpeg";
   bg.style.height = `${GAME_HEIGHT}px`;
   bg.style.width = `${GAME_WIDTH}px`;
 
@@ -53,14 +80,14 @@ const addBackground = (root) => {
   // We don't want the enemies to go beyond the lower edge of the image
   // so we place a white div to hide the enemies after they reach the bottom.
   // To see what it does, you can comment out all the remaining lines in the function to see the effect.
-  const whiteBox = document.createElement('div');
+  const whiteBox = document.createElement("div");
 
   // We put a high z-index so that the div is placed over all other DOM nodes
   whiteBox.style.zIndex = 100;
-  whiteBox.style.position = 'absolute';
+  whiteBox.style.position = "absolute";
   whiteBox.style.top = `${GAME_HEIGHT}px`;
   whiteBox.style.height = `${ENEMY_HEIGHT}px`;
   whiteBox.style.width = `${GAME_WIDTH}px`;
-  whiteBox.style.background = '#fff';
+  whiteBox.style.background = "#fff";
   root.append(whiteBox);
 };

@@ -8,6 +8,8 @@ class Engine {
     // We need the DOM element every time we create a new enemy so we
     // store a reference to it in a property of the instance.
     this.root = theRoot;
+    this.points = 0;
+    this.level = 1;
     // We create our hamburger.
     // Please refer to Player.js for more information about what happens when you create a player
     this.player = new Player(this.root);
@@ -38,6 +40,20 @@ class Engine {
     this.enemies.forEach((enemy) => {
       enemy.update(timeDiff);
     });
+    this.enemies.forEach((enemy) => {
+      if (enemy.destroyed) {
+        this.points += 1;
+        if (this.points % 5 === 0) {
+          this.level += 1;
+          console.log({ level: this.level });
+        }
+      }
+    });
+    const b = document.querySelector("#points-board");
+    b.innerText = `Points: ${this.points}`;
+
+    const levelText = document.getElementById("level");
+    levelText.innerHTML = `Level: ${this.level}`;
 
     // We remove all the destroyed enemies from the array referred to by \`this.enemies\`.
     // We use filter to accomplish this.
@@ -56,8 +72,38 @@ class Engine {
 
     // We check if the player is dead. If he is, we alert the user
     // and return from the method (Why is the return statement important?)
+
     if (this.isPlayerDead()) {
-      window.alert('Game over');
+      console.log(this.root);
+      const gameOver = document.createElement("div");
+      const restartButton = document.createElement("button");
+      restartButton.innerText = "RESTART";
+      restartButton.style.zIndex = "200";
+      restartButton.style.position = "absolute";
+      restartButton.style.padding = "20px";
+      restartButton.style.fontSize = "50px";
+      restartButton.style.backgroundColor = "Transparent";
+      restartButton.style.borderColor = "red";
+      restartButton.style.fontFamily = "Minecrafter";
+      restartButton.style.color = "white";
+      gameOver.classList.add("gameOver");
+      gameOver.innerText = "GAME OVER";
+      gameOver.style.position = "absolute";
+      gameOver.style.color = "red";
+      gameOver.style.zIndex = "200";
+      gameOver.style.fontSize = "100px";
+      this.root.append(gameOver);
+      const xPos = window.innerWidth / 2 - gameOver.offsetWidth / 2;
+      const yPos = window.innerHeight / 2 - gameOver.offsetHeight / 2;
+      gameOver.style.top = `${yPos}`;
+      gameOver.style.left = `${xPos}`;
+      // window.alert("Game over");
+      this.root.append(restartButton);
+      restartButton.style.top = `${yPos + 80}px`;
+      restartButton.style.left = `${xPos + 200}px`;
+      restartButton.addEventListener("click", () => {
+        location.reload();
+      });
       return;
     }
 
@@ -67,7 +113,17 @@ class Engine {
 
   // This method is not implemented correctly, which is why
   // the burger never dies. In your exercises you will fix this method.
+
   isPlayerDead = () => {
-    return false;
+    for (let i = 0; i < this.enemies.length; i++) {
+      if (
+        this.enemies[i].x === this.player.x &&
+        this.enemies[i].y >= GAME_HEIGHT - ENEMY_HEIGHT - PLAYER_HEIGHT
+      ) {
+        return true;
+      }
+    }
   };
 }
+console.log(this.player);
+console.log(this.enemies);
